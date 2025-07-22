@@ -1,14 +1,17 @@
 const fs = require('node:fs');
 const express = require('express');
+const appRouter = require('./routes/appRouter.js');
+const aboutRouter = require('./routes/aboutRouter.js');
+const contactRouter = require('./routes/contactRouter.js');
 
 
 const app = express();
 const PORT = 3000;
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
-app.get('/about', (req, res) => res.sendFile(__dirname + '/about.html'));
-app.get('/contact-me', (req, res) => res.sendFile(__dirname + '/contact-me.html'));
-app.get('/*splat', (req, res) => res.sendFile(__dirname + '/404.html'));
+app.use('/about', aboutRouter);
+app.use('/contact-me', contactRouter);
+app.use('/', appRouter);
+app.use('/{*splat}', appRouter);
 
 app.listen(PORT, () => {
     console.log(`My Info app - listening on port ${PORT}!`);
